@@ -13,9 +13,13 @@ def summarise_url(url):
 
 
 if __name__ == "__main__":
-    passed_url = "https://www.bbc.com/news"
-    summarised_text = summarise_url(passed_url)
+    passed_url = input("Please enter URL to summarise: ".strip())
 
-    if summarised_text:
-        print("Here is your summary: \n")
-        print(summarised_text)
+    if passed_url:
+        summarised_text = summarise_url(passed_url)
+
+        if summarised_text:
+            print("Here is your summary: \n")
+            print(summarised_text)
+    else: 
+        print("No URL provided.")
