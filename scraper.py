@@ -29,12 +29,12 @@ def fetch_clean_text(url):
         return None 
     
 
-# TESTING
+# # TESTING
 
-if __name__=="__main__":
-    url = "https://www.novinky.cz/clanek/domaci-riziko-pro-narodni-bezpecnost-europoslance-dostala-vyhostili-z-moldavska-40531996#dop_ab_variant=0&dop_source_zone_name=novinky.sznhp.box&source=hp&seq_no=1&utm_campaign=&utm_medium=z-boxiku&utm_source=www.seznam.cz"
-    clean_text = fetch_clean_text(url)
+# if __name__=="__main__":
+#     url = "https://www.novinky.cz/clanek/domaci-riziko-pro-narodni-bezpecnost-europoslance-dostala-vyhostili-z-moldavska-40531996#dop_ab_variant=0&dop_source_zone_name=novinky.sznhp.box&source=hp&seq_no=1&utm_campaign=&utm_medium=z-boxiku&utm_source=www.seznam.cz"
+#     clean_text = fetch_clean_text(url)
 
-    if clean_text:
-        print("Fetched text (first 500 characters):\n")
-        print(clean_text[:500])
+#     if clean_text:
+#         print("Fetched text (first 500 characters):\n")
+#         print(clean_text[:500])
