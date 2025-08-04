@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import logging
 
 def fetch_clean_text(url):
     """
@@ -10,8 +11,9 @@ def fetch_clean_text(url):
         #send a HTTP GET request to the URL
         response = requests.get(url, timeout = 10)
         response.raise_for_status() #raise an error if the request failed
+        logging.debug("Content fetched successfully, length: %d", len(response))
     except requests.exceptions.RequestException as e: 
-        print(f"[ERROR] Failed to fetch URL:{e}")
+        logging.error(f"[ERROR] Failed to fetch URL:{e}")
         return None 
     try:
         #parse the HTML content with BeautifulSoup 
@@ -25,7 +27,7 @@ def fetch_clean_text(url):
 
         return text
     except Exception as e: 
-        print(f"[ERROR] Failed to parse HTML content: {e}")
+        logging.error(f"[ERROR] Failed to parse HTML content: {e}")
         return None 
     
 

@@ -1,3 +1,11 @@
+import logging
+
+logging.basicConfig(
+    level = logging.INFO,
+    format = "%(asctime)s [%(levelname)s] %(message)s"
+)
+
+
 from scraper import fetch_clean_text
 from agent import create_summary, extract_topics
 
@@ -6,7 +14,7 @@ def main():
 
     text = fetch_clean_text(url)
     if not text: 
-        print("Failed to fetch or extract text from the URL")
+        logging.error("Failed to fetch or extract text from the URL")
         return 
     
     summary = create_summary(text)
