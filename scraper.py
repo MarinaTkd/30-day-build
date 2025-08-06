@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import logging
+from requests.exceptions import RequestException, Timeout
 
 def fetch_clean_text(url):
     """
@@ -11,13 +12,18 @@ def fetch_clean_text(url):
         #send a HTTP GET request to the URL
         response = requests.get(url, timeout = 10)
         response.raise_for_status() #raise an error if the request failed
-        logging.debug("Content fetched successfully, length: %d", len(response))
+        logging.debug("Content fetched successfully, length: %d", len(response.text))
     except requests.exceptions.RequestException as e: 
         logging.error(f"[ERROR] Failed to fetch URL:{e}")
         return None 
     try:
         #parse the HTML content with BeautifulSoup 
         soup = BeautifulSoup(response.text, 'html.parser')
+        paragraphs = soup.find_all('p')
+
+        if not paragraphs:
+            logging.warning("No <p> tags found at URL: %s", url)
+            return None
 
         #remove script and style elements
         for tag in soup(['script', 'style']):
@@ -26,9 +32,17 @@ def fetch_clean_text(url):
         text = soup.get_text(separator = ' ', strip = True)
 
         return text
-    except Exception as e: 
-        logging.error(f"[ERROR] Failed to parse HTML content: {e}")
-        return None 
+    
+    except Timeout: 
+        logging.error("Timeout occurred while fetching: %s", url)
+    except RequestException as e:
+        logging.error("Request faild for %s; %s", url, str(e))
+    
+    except Exception as e:
+        logging.exception("Unexpected error during scraping: %s", url)
+        
+    
+    return None 
     
 
 # # TESTING

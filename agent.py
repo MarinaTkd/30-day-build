@@ -3,6 +3,8 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from openai import OpenAIError
 import logging
+from openai import OpenAIError, APIConnectionError, RateLimitError
+
 
 
 #loading variables (openAI api key) from the .env file
@@ -26,9 +28,15 @@ def create_summary(content):
 
         result = response.choices[0].message.content.strip()
         return result
+    except APIConnectionError as e:
+        logging.error(f"[APIConnectionError] Failed to connect to OpenAI: {e}")
+    except RateLimitError as e:
+        logging.error(f"[RateLimitError] Rate limit exceeded: {e}")
     except OpenAIError as e:
-        logging.error(f"[ERROR] OpenAI API request failed: {e}")
-        return None
+        logging.error(f"[OpenAIError] OpenAI API returned an error: {e}")
+    except Exception as e:
+        logging.error(f"[Unexpected Error] Something went wrong: {e}")
+    
 
 def extract_topics(content):
     try:
@@ -41,5 +49,6 @@ def extract_topics(content):
         )
         return response.choices[0].message.content.strip()
     except OpenAIError as e:
-        logging.error(f"[ERROR] OpenAI API request failed: {e}")
-        return None
+        logging.error(f"[OpenAIError] OpenAI API failed while extracting topics: {e}")
+    except Exception as e:
+        logging.error(f"[Unexpected Error] Failed to extract topics: {e}")
